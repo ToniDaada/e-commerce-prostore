@@ -9,10 +9,12 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
+import { updateProfile } from "@/lib/actions/user.actions";
 import { updateUerProfileSchema } from "@/lib/validator";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useSession } from "next-auth/react";
 import { useForm } from "react-hook-form";
+import toast from "react-hot-toast";
 import z from "zod";
 const ProfileForm = () => {
   const { data: session, update } = useSession();
@@ -25,8 +27,22 @@ const ProfileForm = () => {
     },
   });
 
-  const onSubmit = () => {
-    return;
+  const onSubmit = async (values: z.infer<typeof updateUerProfileSchema>) => {
+    const res = await updateProfile(values);
+
+    if (!res.success) return toast.error(res.message as string);
+
+    const newSession = {
+      ...session,
+      user: {
+        ...session?.user,
+        name: values.name,
+      },
+    };
+
+    await update(newSession);
+
+    toast.success(res.message as string);
   };
   return (
     <Form {...form}>
