@@ -13,6 +13,8 @@ import { User2Icon } from "lucide-react";
 import { signOutUser } from "@/lib/actions/user.actions";
 const UserButton = async () => {
   const session = await auth();
+
+  console.log(session);
   if (!session) {
     return (
       <Button asChild>
@@ -56,28 +58,29 @@ const UserButton = async () => {
               </div>
             </div>
           </DropdownMenuLabel>
-          <DropdownMenuItem className="p-0 mb-1">
-            <Link
-              href="/user/profile"
-              className="w-full py-4 h-4 justify-start "
-            >
+          <DropdownMenuItem>
+            <Link href="/user/profile" className="w-full  justify-start ">
               User Profile
             </Link>
           </DropdownMenuItem>
-          <DropdownMenuItem className="p-0 mb-1">
-            <Link
-              href="/user/orders"
-              className="w-full py-4 h-4 justify-start "
-            >
+          <DropdownMenuItem>
+            <Link href="/user/orders" className="w-full ">
               Order History
             </Link>
           </DropdownMenuItem>
+          {session?.user?.role === "admin" && (
+            <DropdownMenuItem>
+              <Link href="/user/orders" className="w-full ">
+                Admin
+              </Link>
+            </DropdownMenuItem>
+          )}
           <DropdownMenuItem className="p-0 mb-1">
             {/* REMOVE OUT FORM WHEN DEPLOYING */}
             {/* <form action={signOutUser}> */}
             <Button
               type="submit"
-              className="w-full py-4 h-4 justify-start "
+              className="w-full justify-start "
               variant="ghost"
               onClick={signOutUser}
             >
