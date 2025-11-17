@@ -343,3 +343,26 @@ export async function getOrderSummary() {
     salesData,
   };
 }
+
+// Get all orders
+
+export async function getAllOrders({
+  limit = PAGE_SIZE,
+  page,
+}: {
+  limit?: number;
+  page: number;
+}) {
+  const data = await prisma.order.findMany({
+    orderBy: {
+      createdAt: "desc",
+    },
+    take: limit,
+    skip: (page - 1) * limit,
+    // Adding include cause i also want the user name included
+    include: { user: { select: { name: true } } },
+  });
+
+  const dataCount = await prisma.order.count();
+  return { data, totalPages: Math.ceil(dataCount / limit) };
+}
