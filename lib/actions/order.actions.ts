@@ -376,7 +376,7 @@ export async function deleteOrder(id: string) {
     });
 
     revalidatePath("/admin/orders");
-    return { sucess: true, message: "Order deleted successfully" };
+    return { success: true, message: "Order deleted successfully" };
   } catch (error) {
     return { success: false, message: formatError(error) };
   }
