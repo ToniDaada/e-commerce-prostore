@@ -20,7 +20,7 @@ export function formatNumberwithDecimal(num: number): string {
 
 //Format erros
 
-export async function formatError(error: any) {
+export function formatError(error: any) {
   if (error.name === "ZodError") {
     // Handle zod error
 
