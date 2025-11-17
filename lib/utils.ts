@@ -20,7 +20,7 @@ export function formatNumberwithDecimal(num: number): string {
 
 //Format erros
 
-export async function formatError(error: any) {
+export function formatError(error: any) {
   if (error.name === "ZodError") {
     // Handle zod error
 
@@ -66,6 +66,14 @@ export function formatCurrency(amount: number | string | null) {
   } else {
     return NaN;
   }
+}
+
+//Format Number
+
+const NUMBER_FORMATTER = new Intl.NumberFormat("en-US");
+
+export function formatNumber(number: number) {
+  return NUMBER_FORMATTER.format(number);
 }
 
 //Shorten UUID
