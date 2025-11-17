@@ -56,6 +56,8 @@ export async function createOrder() {
       taxPrice: cart.taxPrice,
       shippingPrice: cart.shippingPrice,
       totalPrice: cart.totalPrice,
+      // Just added this while testing
+      createdAt: cart.createdAt,
     });
 
     //Create a ransaction to create order and order items, here everything has to work or all will fail
