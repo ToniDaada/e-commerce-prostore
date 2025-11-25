@@ -36,3 +36,17 @@ export const DEFAULT_PAYMENT_METHOD =
   process.env.DEFAULT_PAYMENT_METHOD || "PayPal";
 
 export const PAGE_SIZE = Number(process.env.PAGE_SIZE) || 12;
+
+export const productDefaultValues = {
+  name: "",
+  slug: "",
+  category: "",
+  images: [],
+  description: "",
+  prices: "0",
+  stock: "0",
+  rating: "0",
+  numReviews: "0",
+  isFeatured: false,
+  banner: false,
+};
