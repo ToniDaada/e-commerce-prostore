@@ -21,10 +21,9 @@ export const insertProductsSchema = z.object({
   brand: z.string().min(3, "Brand must be at list 3 characters"),
   description: z.string().min(3, "Description must be at list 3 characters"),
   stock: z.coerce.number(),
-  images: z.array(z.string()).min(1, "Product must have at least one image"),
-  isFeatured: z.boolean(),
-
-  banner: z.string().nullable(),
+  // images: z.array(z.string()).min(1, "Product must have at least one image"),
+  // isFeatured: z.boolean(),
+  // banner: z.string().nullable(),
   price: currency,
 });
 

@@ -13,6 +13,12 @@ import { formatCurrency, formatId } from "@/lib/utils";
 
 import Pagination from "@/components/shared/pagination";
 import DeleteDialog from "@/components/shared/delete-dialog";
+import { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "Admin Product",
+};
+
 const AdminProductsPage = async (props: {
   searchParams: Promise<{
     page: string;
@@ -39,7 +45,7 @@ const AdminProductsPage = async (props: {
       <div className="flex-between">
         <h1 className="h2-bold">Products</h1>
         <Button asChild>
-          <Link href="/admin/product/create">Create Product</Link>
+          <Link href="/admin/products/create">Create Product</Link>
         </Button>
       </div>
 
@@ -70,7 +76,7 @@ const AdminProductsPage = async (props: {
               <TableCell>{product.rating}</TableCell>
               <TableCell className="flex gap-1">
                 <Button asChild variant={"outline"} size={"sm"}>
-                  <Link href={`admin/product/${product.id}`}>Edit</Link>
+                  <Link href={`/product/${product.slug}`}>Edit</Link>
                 </Button>
 
                 <DeleteDialog id={product.id} action={deleteProducts} />
