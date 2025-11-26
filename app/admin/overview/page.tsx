@@ -125,7 +125,7 @@ const AdminOverViewPage = async () => {
                     <TableCell>
                       {order.createdAt
                         ? formatDateTime(order.createdAt).dateOnly
-                        : "N/A"}
+                        : `N/A`}
                     </TableCell>
                     <TableCell>{formatCurrency(order.totalPrice)}</TableCell>
                     <TableCell>
