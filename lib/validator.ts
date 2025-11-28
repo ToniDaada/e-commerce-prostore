@@ -22,10 +22,15 @@ export const insertProductsSchema = z.object({
   description: z.string().min(3, "Description must be at list 3 characters"),
   stock: z.coerce.number(),
   images: z.array(z.string()).min(1, "Product must have at least one image"),
-  isFeatured: z.boolean(),
-
-  banner: z.string().nullable(),
+  // isFeatured: z.boolean(),
+  // banner: z.string().nullable(),
   price: currency,
+});
+
+//Schema for updating prodcuts
+
+export const updateProductsSchema = insertProductsSchema.extend({
+  id: z.string().min(1, "Id is required"),
 });
 
 // Schema for stigning users in
@@ -100,6 +105,7 @@ export const insertOrderSchema = z.object({
   paymentMethod: z.string().refine((data) => PAYMENT_METHODS.includes(data), {
     message: "Invalid payment method",
   }),
+    
   shippingAddress: shippingAddressSchema,
 });
 
