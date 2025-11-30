@@ -249,7 +249,7 @@ const ProductForm = ({
                 <FormLabel>Images</FormLabel>
                 <Card className="shadow-none">
                   <CardContent className="space-y-2 mt-2 min-h-48">
-                    <div className="fkex start space-x-2">
+                    <div className="flex-start space-x-2">
                       {images.map((image: string) => (
                         <Image
                           key={image}

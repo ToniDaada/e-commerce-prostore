@@ -116,3 +116,11 @@ export async function updateProduct(
     return { success: false, message: formatError(error) };
   }
 }
+
+//Function to get single product by id
+export async function getLatestProductById(productId: string) {
+  const data = await prisma.product.findFirst({
+    where: { id: productId },
+  });
+  return convertToPlainObject(data);
+}
