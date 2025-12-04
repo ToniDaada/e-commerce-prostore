@@ -9,23 +9,24 @@ import ProductPrice from "@/components/shared/product/product-price";
 import ProductImages from "@/components/shared/product/product-images";
 import AddToCart from "@/components/shared/product/add-to-cart";
 import { getMyCart } from "@/lib/actions/cart.actions";
-// export async function generateMetadata({
-//   params,
-// }: {
-//   params: { slug: string };
-// }): Promise<Metadata> {
-//   const product = await getLatestProductBySlug(params.slug);
+import { Metadata } from "next";
+export async function generateMetadata({
+  params,
+}: {
+  params: { slug: string };
+}): Promise<Metadata> {
+  const product = await getLatestProductBySlug(params.slug);
 
-//   if (!product) {
-//     return {
-//       title: "Product Not Found",
-//     };
-//   }
+  if (!product) {
+    return {
+      title: "Product Not Found",
+    };
+  }
 
-//   return {
-//     title: product.name,
-//   };
-// }
+  return {
+    title: product.name,
+  };
+}
 
 const ProductDetailsPage = async (props: {
   params: Promise<{ slug: string }>;
