@@ -5,6 +5,7 @@ import { APP_NAME } from "@/lib/constants";
 
 import Menu from "./menu";
 import CategoryDrawer from "./category-drawer";
+import Search from "./search";
 
 const Header = () => {
   return (
@@ -25,6 +26,9 @@ const Header = () => {
               {APP_NAME}
             </span>
           </Link>
+        </div>
+        <div className="hidden md:block">
+          <Search />
         </div>
 
         <Menu />
