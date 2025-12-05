@@ -25,32 +25,6 @@ export async function getLatestProductBySlug(slug: string) {
 }
 
 // GET ALL PRODUCTS
-
-// export async function getAllProducts({
-//   query,
-//   limit = PAGE_SIZE,
-//   page,
-//   category,
-// }: {
-//   query: string;
-//   limit?: number;
-//   page: number;
-//   category?: string;
-// }) {
-//   const data = await prisma.product.findMany({
-//     orderBy: { createdAt: "desc" },
-//     skip: (page - 1) * limit,
-//     take: limit,
-//     // include:{produc: {select:{name:true }}}
-//   });
-
-//   const dataCount = await prisma.product.count();
-
-//   return {
-//     data,
-//     totalPages: Math.ceil(dataCount / limit),
-//   };
-// }
 export async function getAllProducts({
   query,
   limit = PAGE_SIZE,
@@ -202,5 +176,27 @@ export async function getLatestProductById(productId: string) {
   const data = await prisma.product.findFirst({
     where: { id: productId },
   });
+  return convertToPlainObject(data);
+}
+
+//Get all categories
+
+export async function getAllCategories() {
+  const data = await prisma.product.groupBy({
+    by: ["category"],
+    _count: true,
+  });
+
+  return data;
+}
+
+//Get featured products
+export async function getFeaturedProducts() {
+  const data = await prisma.product.findMany({
+    where: { isFeatured: true },
+    orderBy: { createdAt: "desc" },
+    take: 4,
+  });
+
   return convertToPlainObject(data);
 }
