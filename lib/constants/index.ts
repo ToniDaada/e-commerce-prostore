@@ -1,4 +1,6 @@
 import { ShippingAddress } from "@/types";
+import z from "zod";
+import { inserReviewSchema } from "../validator";
 
 export const APP_NAME = "E-commerce Store";
 export const APP_DESCRIPTION =
@@ -56,8 +58,10 @@ export const USER_ROLES = process.env.USER_ROLES
   ? process.env.USER_ROLES.split(", ")
   : ["admin", "user"];
 
-export const reviewFormDefaultValues = {
+export const reviewFormDefaultValues: z.infer<typeof inserReviewSchema> = {
   title: "",
-  comment: "",
+  description: "",
+  productId: "",
+  userId: "",
   rating: 0,
 };
