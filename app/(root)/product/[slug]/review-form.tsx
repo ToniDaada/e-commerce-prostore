@@ -27,7 +27,10 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
-import { createUpdateReview } from "@/lib/actions/review.actions";
+import {
+  createUpdateReview,
+  getMyReviewByProductId,
+} from "@/lib/actions/review.actions";
 import { reviewFormDefaultValues } from "@/lib/constants";
 import { inserReviewSchema } from "@/lib/validator";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -50,9 +53,18 @@ const ReviewForm = ({
   const [open, setOpen] = useState(false);
 
   //OOpen Form handleer
-  const handleOpenForm = () => {
+  const handleOpenForm = async () => {
     form.setValue("productId", productId);
     form.setValue("userId", userId);
+
+    //Getting my product review
+    const review = await getMyReviewByProductId({ productId });
+    if (review) {
+      form.setValue("title", review.title);
+      form.setValue("description", review.description);
+      form.setValue("rating", review.rating);
+    }
+
     setOpen(true);
   };
 

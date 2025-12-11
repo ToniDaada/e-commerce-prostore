@@ -93,13 +93,14 @@ export async function createUpdateReview(
 }
 
 //Get all reviews for a product
-export async function getReviewsByProductId(productId: string) {
+export async function getReviews({ productId }: { productId: string }) {
   const reviews = await prisma.review.findMany({
     where: { productId: productId },
     include: {
       user: {
         select: {
           name: true,
+          email: true,
         },
       },
     },
@@ -112,11 +113,40 @@ export async function getReviewsByProductId(productId: string) {
 }
 
 //GET A EWVIEW WRITEN BUT THE CURRENT USERS
-export async function getMyReviewByProductId(productId: string) {
+export async function getMyReviewByProductId({
+  productId,
+}: {
+  productId: string;
+}) {
   const session = await auth();
   if (!session) throw new Error("User is not authenticated");
 
   return await prisma.review.findFirst({
     where: { productId, userId: session?.user?.id },
   });
+}
+
+//to delete review
+export async function deleteReview(productId: string) {
+  try {
+    const session = await auth();
+    if (!session) throw new Error("User is not authenticated");
+
+    await prisma.review.deleteMany({
+      where: {
+        id: productId,
+        userId: session?.user?.id,
+      },
+    });
+
+    return {
+      success: true,
+      message: "Review deleted successfully",
+    };
+  } catch (error) {
+    return {
+      success: false,
+      message: formatError(error),
+    };
+  }
 }

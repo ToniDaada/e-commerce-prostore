@@ -2,8 +2,20 @@
 
 import { Review } from "@/types";
 import Link from "next/link";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import ReviewForm from "./review-form";
+import { deleteReview, getReviews } from "@/lib/actions/review.actions";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import { Calendar, Mail, Trash2, User } from "lucide-react";
+import { formatDateTime } from "@/lib/utils";
+import Rating from "@/components/shared/product/rating";
+import toast from "react-hot-toast";
 
 const ReviewList = ({
   userId,
@@ -16,8 +28,29 @@ const ReviewList = ({
 }) => {
   const [review, setReviews] = useState<Review[]>([]);
 
-  const reload = () => {
-    console.log("Review Submitted");
+  useEffect(() => {
+    const loadReviews = async () => {
+      const res = await getReviews({ productId });
+      setReviews(res.reviews);
+    };
+
+    loadReviews();
+  }, [productId]);
+
+  //Reload reviews after created o update
+  const reload = async () => {
+    const res = await getReviews({ productId });
+    setReviews([...res.reviews]);
+  };
+
+  const deleteReviews = async (productId: string) => {
+    const res = await deleteReview(productId);
+    if (res.success) {
+      toast.success(res.message);
+      reload();
+    } else {
+      toast.error(res.message);
+    }
   };
   return (
     <div className="space-y-4">
@@ -41,7 +74,47 @@ const ReviewList = ({
         </div>
       )}
 
-      <div className="flex flex-col gap-3">{/* Review */}</div>
+      <div className="flex flex-col gap-3">
+        {/* Review */}
+
+        {review.map(
+          (rev) => (
+            console.log(rev),
+            (
+              <Card key={rev.id}>
+                <CardHeader>
+                  <div className="flex-between">
+                    <CardTitle>{rev.title}</CardTitle>
+                    {/* <Trash2
+                      className="h-4 w-4 text-red-500 cursor-pointer hover:scale-[105%] duration-500"
+                      onClick={() => deleteReviews(rev.productId)}
+                    /> */}
+                  </div>
+                  <CardDescription>{rev.description}</CardDescription>
+                </CardHeader>
+                <CardContent>
+                  <div className="flex space-x-4 text-sm text-muted-foreground">
+                    {/* RATING */}
+                    <Rating value={rev.rating} />
+                    <div className="flex items-center">
+                      <User className="mr-1 h-3 w-3" />
+                      {rev.user ? rev.user?.name : "Deleted User"}
+                    </div>
+                    <div className="flex items-center">
+                      <Mail className="mr-1 h-3 w-3" />
+                      {rev.user?.email ? rev.user?.email : ""}
+                    </div>
+                    <div className="flex items-center">
+                      <Calendar className="mr-1 h-3 w-3" />
+                      {formatDateTime(rev.createdAt).dateTime}
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
+            )
+          )
+        )}
+      </div>
     </div>
   );
 };
